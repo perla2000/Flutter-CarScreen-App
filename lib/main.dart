@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'package:drip/pages/searchresultwidgets/main_settings_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'dart:math';
 import'variables.dart' ;
 import 'mqtt_publish.dart';
@@ -12,22 +12,24 @@ import 'mqtt_publish.dart';
 import 'package:drip/homepage.dart';
 import 'music.dart';
 import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
-import 'music.dart';
+
+import 'ac_page.dart';
 
 
 void main() {
+  mqtt_start();
   runApp(MaterialApp(
     initialRoute:'/home',
     routes: {
       '/dashboard': (context) => MyApp(),
       '/home':(context)=>HomePage(),
-      '/music':(context)=>Music(),
-      '/homemusic': (_) => const MyHomePage(),
+      '/homemusic': (context) => const MyHomePage(),
+      '/settings':(context)=>  MainSettings(),
+      '/ac':(context) => AcPage(),
 
     },
   ));
-  //mqtt_start();
+
 }
 
 
@@ -79,15 +81,16 @@ class _State extends State<MyApp> {
         // }
         args[2]=_speed;
         if (client.connectionStatus!.state == MqttConnectionState.connected) {
-          //publish('DashBoard');
+          publish('DashBoard');
         }
       });
     });
     _timer2 = Timer.periodic(const Duration(milliseconds: 8000), (_timer) {
       setState(()  {
 
-        _battery=(Random().nextDouble()*147);
-        _battery = double.parse(_battery.toStringAsFixed(1));
+        // _battery=(Random().nextDouble()*147);
+        // _battery = double.parse(_battery.toStringAsFixed(1));
+        _battery=96;
 
         args[0]=_battery;
         if (client.connectionStatus!.state == MqttConnectionState.connected) {
@@ -124,8 +127,6 @@ class _State extends State<MyApp> {
   Widget build(BuildContext context) {
     final Orientation orientation = MediaQuery.of(context).orientation;
     final bool isLandscape = orientation == Orientation.landscape;
-
-
     return Scaffold(
         primary: !isLandscape,
         backgroundColor:Color(0xFF0F0F11),
@@ -400,7 +401,7 @@ class _State extends State<MyApp> {
                                         ),
                                         SizedBox(height: 10),
                                         const Center(
-                                          child: Text('F',
+                                          child: Text('°C',
 
                                               style: TextStyle(
                                                   fontSize: 25,

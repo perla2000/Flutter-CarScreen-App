@@ -36,8 +36,6 @@ void mqtt_start() async {
   client.connectionMessage = connMess;
 
   try {
-
-
     await client.connect();
   } on Exception catch (e) {
     print('EXAMPLE::client exception - $e');

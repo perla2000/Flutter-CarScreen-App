@@ -193,42 +193,10 @@ class _SettingsPageState extends State<SettingsPage> {
             const Text(
               'Contact',
             ),
-            Row(
-              crossAxisAlignment: mat.CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    icon: Image.asset(
-
-                        'assets/githubDarkMode.png',
-                      width: 40,
-                      height: 40,
-
-
-                    ),
-                    onPressed: () {
-                      launch('https://github.com/Spsden/Drip.git');
-                    }),
-
-                IconButton(
-                    icon: Image.asset('assets/telegram.png',   width: 50,
-                      height: 50,),
-                    onPressed: () {
-                      launch('https://t.me/Regiment_Raucous');
-                    }),
-
-              ],
-            ),
-            const Text('Made with ❤️by Suraj Pratap Singh'),
-
-
-
-
-
-
             //
             //
 
-           
+
             biggerSpacer,
             biggerSpacer,
             biggerSpacer,

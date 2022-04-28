@@ -93,7 +93,7 @@ class AudioPlayerBarState extends State<AudioPlayerBar>
                const TrackInfo(),
                MediaQuery.of(context).size.width > 500 ?
               const Spacer() : const SizedBox(width: 5,),
-              const PlayBackControls(),
+              //const PlayBackControls(),
               const Spacer(),
              //if (MediaQuery.of(context).size.width > 800)
               if(constraints.maxWidth >800)
@@ -295,16 +295,16 @@ class _PlayBackControlsState extends State<PlayBackControls> {
                ),
                child: Stack(
                  children: [
-                   StreamBuilder<PlaybackState>(
-                     stream: player.playbackStream,
-                     builder: (context, snapshot) {
+                    StreamBuilder<PlaybackState>(
+      //                stream: player.playbackStream,
+                    builder: (context, snapshot) {
                        final playerState = snapshot.data;
                        final isCompleted = playerState?.isCompleted;
 
 
-      //                 // final processingState = playerState?.processingState;
-                       final playing = playerState?.isPlaying;
-                        //final playing = true;
+                       // final processingState = playerState?.processingState;
+                       //final playing = playerState?.isPlaying;
+                       final playing = true;
 
                        if (playing != true) {
                          return mat.IconButton(
@@ -315,23 +315,20 @@ class _PlayBackControlsState extends State<PlayBackControls> {
                            onPressed: player.play,
                          );
                        }
-                       else if(playerState!.isCompleted){         //playerState!.isCompleted
-                         // AudioControlClass.nextMusic(context,1);
-                         // print('complll');
-                         autoPress(context);
+      //                  else if(false){         //playerState!.isCompleted
+      //                    // AudioControlClass.nextMusic(context,1);
+      //                    // print('complll');
+      //                    autoPress(context);
+      //                    return mat.IconButton(
+      //                      hoverColor: context.watch<AppTheme>().color,
+      // //                       splashRadius:30,
+      //                      icon: const Icon(mat.Icons.play_arrow),
+      //                      iconSize: largeIcons,
+      //                      onPressed: (){},
+      //                    );
+      //                  }
       //
-      //
-      //
-                         return mat.IconButton(
-                           hoverColor: context.watch<AppTheme>().color,
-      //                       splashRadius:30,
-                           icon: const Icon(mat.Icons.play_arrow),
-                           iconSize: largeIcons,
-                           onPressed: (){},
-                         );
-                       }
-      //
-      //
+
                        else if (playing == true) {
                          return mat.IconButton(
                              splashRadius:30,
@@ -341,9 +338,9 @@ class _PlayBackControlsState extends State<PlayBackControls> {
                            onPressed: player.pause,
                          );
                        }
-
-
-
+      //
+      //
+      //
                       else  {
                         return mat.IconButton(
                           icon: const Icon(mat.Icons.album),
@@ -351,20 +348,20 @@ class _PlayBackControlsState extends State<PlayBackControls> {
                           onPressed: () =>
                               AudioControlClass.seek(Duration.zero),
                         );
-                      }
-                     },
-                  ),
-               ValueListenableBuilder<double>(
-                      valueListenable: bufferProgress,
-                      builder: (_,value,__){
-                        return value < 10 ?
-                        Container(
-                          margin: const EdgeInsets.all(8.0),
-                          width: largeIcons,
-                          height: largeIcons,
-                          child: const mat.CircularProgressIndicator(),
-                        ) : const SizedBox();
-                      }),
+                        }}
+    ),
+
+      //          ValueListenableBuilder<double>(
+      //                 valueListenable: bufferProgress,
+      //                 builder: (_,value,__){
+      //                   return value < 10 ?
+      //                   Container(
+      //                     margin: const EdgeInsets.all(8.0),
+      //                     width: largeIcons,
+      //                     height: largeIcons,
+      //                     child: const mat.CircularProgressIndicator(),
+      //                   ) : const SizedBox();
+      //                 }),
                mat.IconButton(
                icon: const Icon(mat.Icons.skip_next),
                iconSize: smallIcons,

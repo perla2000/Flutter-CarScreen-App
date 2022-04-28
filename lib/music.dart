@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:drip/ac_page.dart';
 import 'package:drip/pages/audioplayerbar.dart';
 import 'package:drip/pages/common/hot_keys.dart';
 
@@ -37,8 +38,6 @@ const String appTitle = 'Drip';
 bool darkMode = true;
 
 void start(bool choice) async {
-
-
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     doWhenWindowReady(() {
@@ -91,7 +90,7 @@ void start(bool choice) async {
   }
 
   runApp(const Music());
-  }
+}
 
 Future<void> openHiveBox(String boxName, {bool limit = false}) async {
   final box = await Hive.openBox(boxName).onError((error, stackTrace) async {
@@ -141,9 +140,12 @@ class Music extends StatelessWidget {
                   themeMode: appTheme.mode,
                   debugShowCheckedModeBanner: false,
                   initialRoute: '/',
-                  routes: {'/': (_) => const MyHomePage(),
-                    '/home':(context)=>HomePage(),
-                    '/dashboard': (context) => MyApp(),},
+                  routes: {
+                    '/': (_) => const MyHomePage(),
+                    '/home': (context) => HomePage(),
+                    '/dashboard': (context) => MyApp(),
+                    '/ac': (context) => AcPage(),
+                  },
                   theme: ThemeData(
                     accentColor: appTheme.color,
                     brightness: appTheme.mode == ThemeMode.system
@@ -184,8 +186,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final colorsController = ScrollController();
   final settingsController = ScrollController();
 
-
-
   Map<int?, GlobalKey?> navigatorKeys = {
     0: GlobalKey(),
     1: GlobalKey(),
@@ -198,11 +198,16 @@ class _MyHomePageState extends State<MyHomePage> {
     index = 0;
 
     screens = [
-       FirstPageStack(navigatorKey: navigatorKeys[0]),
-       SecondPageStack(searchArgs: '', fromFirstPage: false,navigatorKey: navigatorKeys[1]),
-
-       CurrentPlaylist(fromMainPage: true,navigatorKey: navigatorKeys[2],),
-       SettingsPage(navigatorKey:navigatorKeys[3],)
+      FirstPageStack(navigatorKey: navigatorKeys[0]),
+      SecondPageStack(
+          searchArgs: '', fromFirstPage: false, navigatorKey: navigatorKeys[1]),
+      CurrentPlaylist(
+        fromMainPage: true,
+        navigatorKey: navigatorKeys[2],
+      ),
+      SettingsPage(
+        navigatorKey: navigatorKeys[3],
+      )
     ];
     _pageController = PageController(initialPage: index);
 
@@ -272,9 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //     padding:
               //         const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
               //     child:
-              displayMode:
-
-              Platform.isWindows
+              displayMode: Platform.isWindows
                   ? PaneDisplayMode.compact
                   : PaneDisplayMode.top,
               indicatorBuilder: () {
@@ -293,14 +296,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(FluentIcons.back),
                   title: const Text('Back'),
                   onTap: () {
-                     // start(false);
+                    // start(false);
                     Navigator.pushNamed(context, '/home');
+                    return;
                   },
                 ),
                 PaneItem(
                   icon: const Icon(FluentIcons.home),
                   title: const Text('Home'),
-
                 ),
                 PaneItem(
                   icon: const Icon(FluentIcons.search),
@@ -320,7 +323,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(FluentIcons.settings),
                   title: const Text('Settings'),
                 ),
-
               ],
               autoSuggestBoxReplacement: const Icon(FluentIcons.search),
             ),
@@ -356,27 +358,24 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             footerBuilder: (context, state) {
               return Container(
-
                 alignment: Alignment.center,
-
                 height: 100,
                 child: Stack(children: [
                   ClipRect(
                     child: mat.Material(
                       child: Acrylic(
-                        child:  const SizedBox(
+                        child: const SizedBox(
                           child: AudioPlayerBar(),
                           width: double.infinity,
-
-
                           height: 100,
-
                         ),
                         elevation: 10,
                         shape: mat.RoundedRectangleBorder(
                             borderRadius: mat.BorderRadius.circular(8)),
-                        tint: context.watch<ActiveAudioData>().albumExtracted.toAccentColor() ,
-
+                        tint: context
+                            .watch<ActiveAudioData>()
+                            .albumExtracted
+                            .toAccentColor(),
                       ),
                     ),
                   ),

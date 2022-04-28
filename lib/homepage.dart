@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as acrylic;
@@ -16,6 +17,7 @@ import 'main.dart';
 import 'package:flutter/material.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 import 'music.dart';
+import 'package:intl/intl.dart';
 class HomePage extends StatefulWidget {
 
 
@@ -25,86 +27,42 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  // void y_music(bool choice) async {
-  //   if(choice){
-  //
-  //     WidgetsFlutterBinding.ensureInitialized();
-  //     if (Platform.isWindows) {
-  //       doWhenWindowReady(() {
-  //         appWindow.minSize = const Size(540, 540);
-  //         appWindow.size = const Size(900, 640);
-  //         appWindow.alignment = Alignment.center;
-  //         appWindow.show();
-  //         appWindow.title = 'Drip';
-  //       });
-  //
-  //       // SystemTheme.accentInstance;
-  //     }
-  //
-  //     setPathUrlStrategy();
-  //
-  //     if (Platform.isWindows) {
-  //       await Hive.initFlutter('Drip');
-  //     } else {
-  //       await Hive.initFlutter();
-  //     }
-  //
-  //     await openHiveBox('settings');
-  //
-  //     await openHiveBox('Favorite Songs');
-  //     await openHiveBox('cache', limit: true);
-  //     DartVLC.initialize();
-  //
-  //     if (Platform.isWindows) {
-  //       await acrylic.Window.initialize();
-  //       hotKeyManager.unregisterAll();
-  //       await HotKeys.initialize();
-  //     }
-  //     //await Window.initialize();
-  //     //WidgetsFlutterBinding.ensureInitialized();
-  //
-  //     runApp(const Music());
-  //
-  //     if (defaultTargetPlatform == TargetPlatform.windows ||
-  //         defaultTargetPlatform == TargetPlatform.android ||
-  //         kIsWeb) {
-  //       darkMode = await SystemTheme.darkMode;
-  //       await SystemTheme.accentInstance.load();
-  //     } else {
-  //       darkMode = true;
-  //     }
-  //     if (!kIsWeb &&
-  //         [TargetPlatform.windows, TargetPlatform.linux]
-  //             .contains(defaultTargetPlatform)) {
-  //       //await flutter_acrylic.Window.initialize();
-  //     }
-  //
-  //     runApp(const Music());
-  //   }else{
-  //     return;
-  //   }
-  // }
+  String date = DateFormat('EEEE, d MMM, yyyy').format(DateTime.now());
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);}
+
   @override
   Widget build(BuildContext context) {
-      final Orientation orientation = MediaQuery.of(context).orientation;
-      final bool isLandscape = orientation == Orientation.landscape;
 
-
-      return Scaffold(
+    final Orientation orientation = MediaQuery.of(context).orientation;
+    final bool isLandscape = orientation == Orientation.landscape;
+    return Scaffold(
         primary: !isLandscape,
-        // backgroundColor:Color(0xFF0F0F11),
         backgroundColor:  Colors.black,
+        // backgroundColor:Color(0xFF0F0F11),
+
         appBar: AppBar(
           title: const Text('Juice Mobility'),
           actions: <Widget>[
-            DigitalClock(
-              areaDecoration: const BoxDecoration(color: Colors.transparent),
-              areaAligment: AlignmentDirectional.center,
-              hourMinuteDigitDecoration:
-              const BoxDecoration(color: Colors.transparent),
-              hourMinuteDigitTextStyle: const TextStyle(fontSize: 15),
-              showSecondsDigit: false,
+            SizedBox(
+              height:40,
+              child: Column(
+                children: [
+                  DigitalClock(
+                    areaDecoration: const BoxDecoration(color: Colors.transparent),
+                    areaAligment: AlignmentDirectional.center,
+                    hourMinuteDigitDecoration:
+                    const BoxDecoration(color: Colors.transparent),
+                    hourMinuteDigitTextStyle: const TextStyle(fontSize: 15),
+                    showSecondsDigit: false,
 
+                  ),
+                ],
+              ),
             )
           ],
           backgroundColor:Color(0xff1213b7),
@@ -119,24 +77,33 @@ class _HomePageState extends State<HomePage> {
           children: [
         SizedBox(
             //ClockCustomizer((ClockModel model) => DigitalClock(model))
-          child: DigitalClock(
-            areaDecoration: const BoxDecoration(color: Colors.transparent),
+          child: Column(
+            children: [
+              DigitalClock(
+                areaDecoration: const BoxDecoration(color: Colors.transparent),
 
-            hourMinuteDigitTextStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: 50,
-            ),
-            hourMinuteDigitDecoration:
-            const BoxDecoration(color: Colors.transparent),
-            secondDigitTextStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: 50,
+                hourMinuteDigitTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 70,
+                ),
+                hourMinuteDigitDecoration:
+                const BoxDecoration(color: Colors.transparent),
+                secondDigitTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  ),
+                showSecondsDigit: false,
+                // secondDigitDecoration:
+                // const BoxDecoration(color: Colors.transparent),
               ),
-            secondDigitDecoration:
-            const BoxDecoration(color: Colors.transparent),
+              Text(
+                date,
+                style: TextStyle(color:Colors.white,fontSize: 20),
+              ),
+            ],
           ),
 
-        ),git
+        ),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -209,7 +176,10 @@ class _HomePageState extends State<HomePage> {
                   elevation: 8,
                   borderRadius: BorderRadius.circular(28),
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){
+
+                      Navigator.pushNamed(context, '/settings');
+                    },
                     child: Column(
                       children: [
                         Ink.image(
@@ -261,7 +231,9 @@ class _HomePageState extends State<HomePage> {
                   elevation: 8,
                   borderRadius: BorderRadius.circular(28),
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.pushNamed(context, '/ac');
+                    },
 
 
                     child: Column(
