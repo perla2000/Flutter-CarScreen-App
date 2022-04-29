@@ -1,7 +1,15 @@
 import 'dart:io';
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:app_settings/app_settings.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:device_apps/device_apps.dart';
 import 'package:drip/pages/common/hot_keys.dart';
+import 'package:device_apps/device_apps.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:device_apps/device_apps.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +19,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:system_theme/system_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as acrylic;
 import 'main.dart';
@@ -18,6 +27,23 @@ import 'package:flutter/material.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 import 'music.dart';
 import 'package:intl/intl.dart';
+import 'package:device_apps/device_apps.dart';
+import 'package:url_launcher/url_launcher.dart';
+//import 'package:android_intent/android_intent.dart';
+// Future openBrowserURL({ required String url,bool inApp =false,}) async{
+//   if(await canLaunch(url)){
+//     await launch(
+//       url,
+//       forceWebView: inApp,
+//       enableJavaScript: true,
+//     );
+//   }
+// }
+
+void _launchUrl(url) async {
+  if(!await launchUrl(url)) throw 'Could not lauch $url';
+}
+
 class HomePage extends StatefulWidget {
 
 
@@ -114,7 +140,10 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(28),
                     child: InkWell(
                     onTap: (){
-                      start(true);
+                      final Uri url = Uri.parse('https://music.youtube.com/');
+                      _launchUrl(url);
+                      //start(true);
+
                       },
                     child: Ink.image(
                                     image:const AssetImage (
@@ -154,7 +183,10 @@ class _HomePageState extends State<HomePage> {
                   elevation: 8,
                   borderRadius: BorderRadius.circular(28),
                   child: InkWell(
-                    onTap: (){},
+                    onTap: () async {
+                      final Uri url = Uri.parse('https://www.google.com/maps');
+                      _launchUrl(url);
+                      },
                     child: Container(
                       alignment: Alignment.center,// use aligment
                       child: Image.asset(
@@ -177,8 +209,9 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(28),
                   child: InkWell(
                     onTap: (){
-
-                      Navigator.pushNamed(context, '/settings');
+                      AppSettings.openDeviceSettings(
+                        asAnotherTask: true,
+                      );
                     },
                     child: Column(
                       children: [
@@ -204,7 +237,10 @@ class _HomePageState extends State<HomePage> {
                   elevation: 8,
                   borderRadius: BorderRadius.circular(28),
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      final number = '+96176788968';
+                      launch('tel://$number');
+                    },
 
 
                     child: Column(

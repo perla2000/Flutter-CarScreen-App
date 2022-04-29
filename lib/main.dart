@@ -26,7 +26,6 @@ void main() {
       '/homemusic': (context) => const MyHomePage(),
       '/settings':(context)=>  MainSettings(),
       '/ac':(context) => AcPage(),
-
     },
   ));
 
@@ -42,10 +41,10 @@ class MyApp extends StatefulWidget {
 
 class _State extends State<MyApp> {
 
-  double _speed=0;
-  double _battery=0;
-  double _rpm=0;
-  double _tmp=0;
+  double _speed=80;
+  double _battery=96;
+  double _rpm=4;
+  double _tmp=22;
   late Timer _timer1;
   late Timer _timer2;
   late Timer _timer3;
